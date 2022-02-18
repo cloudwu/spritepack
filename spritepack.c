@@ -194,7 +194,7 @@ geti_field(lua_State *L, const char *key) {
 
 static inline int
 rect_invalid(int w, int h, int x, int y, int width, int height) {
-	return x+w >= width || y+h >= height;
+	return !(x+w >= width || y+h >= height);
 }
 
 static unsigned char *
@@ -214,7 +214,7 @@ read_img(lua_State *L, int *w, int *h, int *x, int *y, int *stride, int *px, int
 	unsigned char *img = stbi_load(filename, &width, &height, &comp, 0);
 	if (comp != 4 || rect_invalid(*w, *h, *x, *y, width, height)) {
 		stbi_image_free(img);
-		luaL_error(L, "Load %s failed", img);
+		luaL_error(L, "Load %s failed", filename);
 	}
 	*stride = width;
 	return img;
